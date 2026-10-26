@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Portrait</title>
+    <meta
+      name="description"
+      content="Explore an expressive portrait that turns with your cursor movement."
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- High-Fashion Cinematic Preloader -->
+    <div class="preloader" id="preloader" aria-live="polite">
+      <div class="preloader-center">
+        <div class="preloader-counter-wrap">
+          <span class="preloader-num" id="load-num">000</span>
+          <span class="preloader-symbol">%</span>
+        </div>
+        <div class="preloader-track">
+          <div class="preloader-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Luxury Editorial Overlay -->
+    <main class="overlay-container" aria-label="Visual Gallery Intro">
+      <!-- Bottom Editorial Layout -->
+      <footer class="editorial-bottom">
+        <div class="editorial-headline-wrap">
+          <h1 class="editorial-headline">
+            <span class="serif-accent">Emotion</span> in Motion
+          </h1>
+          <p class="editorial-subheading">
+            Every glance brings a new expression into focus.
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Scrub Engine Script -->
+    <script src="./app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.getElementById("preloader");
+        const progressFill = document.getElementById("progress-fill");
+        const loadNum = document.getElementById("load-num");
+
+        // Initialize the Video Scrubbing Engine
+        window.scrubber = initScrubVideo({
+          videoSrc: "./assets/ezgif-frame-{fff}.jpg",
+          objectPosition: "50% center", // Centered character
+          sensitivity: 1.0,
+          ease: 0.15,
+          idleMs: 1200,
+          neutral: 0.0, // Resting pose at frame 1: character faces forward
+          frameCount: 300,
+          fps: 30,
+          onProgress: (ratio) => {
+            const percent = Math.min(100, Math.round(ratio * 100));
+            // Format with padded zeros for an editorial monospace look (e.g., "042", "100")
+            const formatted = String(percent).padStart(3, "0");
+
+            if (loadNum) loadNum.textContent = formatted;
+            if (progressFill) progressFill.style.width = percent + "%";
+
+            if (ratio >= 1) {
+              // Elegant sequential transition
+              setTimeout(() => {
+                if (preloader) {
+                  preloader.classList.add("is-complete");
+                  setTimeout(() => {
+                    preloader.classList.add("is-revealed");
+                  }, 280);
+                }
+              }, 300);
+            }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
